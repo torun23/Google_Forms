@@ -2,6 +2,7 @@ $(document).ready(function() {
     let index = 1;
     let activeSection = null;
 
+    // Add option function
     function addOption(type, container) {
         let optionIndex = container.children().length + 1;
         let optionHtml;
@@ -24,6 +25,7 @@ $(document).ready(function() {
         container.append(optionHtml);
     }
 
+    // Form section function
     function createFormSection() {
         let newSection = `
             <div class="form-section" data-index="${index}">
@@ -37,16 +39,13 @@ $(document).ready(function() {
                         <option value="checkboxes">Checkboxes</option>
                         <option value="dropdown">Dropdown</option>
                     </select>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="required-toggle">
+                        <span class="slider"></span>
+                    </label>
                     <span class="delete-section-icon"><i class="fas fa-trash-alt"></i></span>
                 </div>
                 <div class="options-container"></div>
-                <div class="toggle-container">
-                    <span class="status">Required</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" class="toggleButton">
-                        <span class="slider"></span>
-                    </label>
-                </div>
             </div>
         `;
         $('#form-container').append(newSection);
@@ -66,19 +65,11 @@ $(document).ready(function() {
                 left: position.left - buttonWidth - 47 + 'px',
                 top: position.top + activeSection.height() / 2 - buttonHeight / 2 + 'px'
             });
-        } else {
-            let containerPosition = $('#form-container').position();
-            let buttonWidth = $('#add-section-btn').outerWidth();
-            let buttonHeight = $('#add-section-btn').outerHeight();
-
-            $('#add-section-btn').css({
-                position: 'absolute',
-                left: containerPosition.left + 'px',
-                top: containerPosition.top + $('#form-container').height() + 20 + 'px'
-            });
         }
     }
 
+    // Event handler is triggered
+    // creates a new form section;sets it as active;repositions the add section button
     $('#add-section-btn').on('click', function() {
         createFormSection();
         $('.form-section').removeClass('active');
@@ -87,6 +78,7 @@ $(document).ready(function() {
         positionAddSectionButton();
     });
 
+    // It updates the options container based on the selected type, adding the necessary input fields or buttons.
     $(document).on('change', '.custom-select', function() {
         let type = $(this).val();
         let container = $(this).closest('.form-section').find('.options-container');
@@ -100,17 +92,21 @@ $(document).ready(function() {
             container.append('<textarea class="form-control" disabled placeholder="Paragraph text"></textarea>');
         } else {
             addOption(type, container);
-            $(this).closest('.form-section').append('<button class="btn btn-secondary btn-sm add-option-btn">Add Option</button>');
+            $(this).closest('.form-section').append('<button class="btn btn-secondary add-option-btn">Add Option</button>');
         }
     });
 
+    // add option event handler
+    // adds a new option to the options container and updates the option numbers
     $(document).on('click', '.add-option-btn', function() {
         let type = $(this).closest('.form-section').find('.custom-select').val();
         let container = $(this).closest('.form-section').find('.options-container');
         addOption(type, container);
+        // refreshOptionNumbers(container);
     });
 
-    $(document).on('click','.delete-section-icon', function() {
+    // removes the section;updates the active section;repositions add section button
+    $(document).on('click', '.delete-section-icon', function() {
         let section = $(this).closest('.form-section');
         let prevSection = section.prev('.form-section');
         let nextSection = section.next('.form-section');
@@ -129,19 +125,19 @@ $(document).ready(function() {
         positionAddSectionButton();
     });
 
+    // delete option
     $(document).on('click', '.delete-option-icon', function() {
         let option = $(this).closest('.option');
         let container = option.closest('.options-container');
         option.remove();
+K    });
+
+    // Event handler for required toggle button
+    $(document).on('click', '.required-toggle', function() {
+        $(this).closest('.form-section').toggleClass('required');
     });
 
-    $(document).on('click', '.form-section', function() {
-        $('.form-section').removeClass('active');
-        $(this).addClass('active');
-        activeSection = $(this);
-        positionAddSectionButton();
-    });
-
+    // Preview button functionality
     $('#preview-btn').on('click', function() {
         let previewWindow = window.open('', '_blank');
         let previewContent = `
@@ -171,6 +167,7 @@ $(document).ready(function() {
             previewContent += '</div>';
             let type = $(this).find('.custom-select').val();
             let optionsContainer = $(this).find('.options-container');
+
             if (type === 'multiple-choice') {
                 optionsContainer.find('.option').each(function() {
                     previewContent += `
@@ -204,13 +201,21 @@ $(document).ready(function() {
             previewContent += '</div>';
         });
         previewContent += `
-                    <button class="btn btn-success" style = "margin-left: 240px; margin-top: 20px ">Submit</button>
+                    <button class="btn btn-success" style="margin-left: 240px; margin-top: 20px">Submit</button>
                 </div>
             </body>
             </html>
         `;
         previewWindow.document.write(previewContent);
         previewWindow.document.close();
+    });
+
+    // Activate the section;repositions add section button
+    $(document).on('click', '.form-section', function() {
+        $('.form-section').removeClass('active');
+        $(this).addClass('active');
+        activeSection = $(this);
+        positionAddSectionButton();
     });
 
     $('#form-container').sortable({
@@ -224,13 +229,4 @@ $(document).ready(function() {
     });
 
     $('#form-container').disableSelection();
-    
-    $(document).on('change', '.toggleButton', function() {
-        let status = $(this).prop('checked');
-        if (status) {
-            $(this).closest('.form-section').addClass('required-section');
-        } else {
-            $(this).closest('.form-section').removeClass('required-section');
-        }
-    });
 });
