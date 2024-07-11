@@ -1,15 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Form Clone</title>
-    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/styles.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/jquery-ui.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
+    <style>
+        .navbar-custom {
+            background-color: rgb(103, 58, 183);
+            color: white;
+            border-radius: 0;
+        }
+
+        .navbar-custom .navbar-brand {
+            color: white;
+            font-size: 18px; /* Adjust font size for navbar links */
+        }
+
+        .navbar-custom .navbar-nav > li > a {
+            color: white;
+            font-size: 16px; /* Adjust font size for navbar links */
+        }
+
+        /* Additional styling for submit button */
+        #submit-btn {
+            margin-top: 20px;
+            float: left; /* Align button to the left */
+            clear: both; /* Clear float to ensure proper layout */
+        }
+    </style>
 </head>
+
 <body>
+    <nav class="navbar navbar-inverse navbar-custom">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="<?php echo base_url(); ?>home/index2">Google Forms</a>
+                <a class="navbar-brand" href="<?php echo base_url(); ?>home/index3">Home</a>
+                <a class="navbar-brand" href="<?php echo base_url(); ?>home/index1">About</a>
+            </div>
+            <div id="navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <a class="navbar-brand" href="<?php echo base_url(); ?>users/logout">Logout</a>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
         <div class="form-header">
             <button id="preview-btn" class="btn btn-info"><i class="fas fa-eye"></i></button>
@@ -17,6 +58,9 @@
             <button id="add-section-btn" class="btn btn-primary">+</button>
         </div>
         <div id="form-container"></div>
+
+        <!-- Submit button -->
+        <button class="btn btn-success" style="margin-left: 240px; margin-top: 20px">Submit</button>
     </div>
 
     <script src="<?php echo base_url('assets/js/jquery.min.js'); ?>"></script>
@@ -24,4 +68,5 @@
     <script src="<?php echo base_url('assets/js/jquery-ui.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/scripts.js'); ?>"></script>
 </body>
+
 </html>
