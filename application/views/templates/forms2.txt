@@ -1,0 +1,458 @@
+To achieve the functionality where the form data is submitted and stored in the database using CodeIgniter, we need to set up the necessary controllers, models, and views. Below is a detailed guide on how to implement this.
+
+### Step 1: Update JavaScript (scripts.js)
+
+The JavaScript file will handle form interactions and prepare data for submission to the server.
+
+```javascript
+$(document).ready(function() {
+    let index = 1;
+    let activeSection = null;
+
+    // Function to add an option based on type
+    function addOption(type, container) {
+        let optionIndex = container.children().length + 1;
+        let optionHtml;
+        if (type === 'multiple-choice' || type === 'checkboxes') {
+            optionHtml = `
+                <div class="option">
+                    <input type="${type === 'multiple-choice' ? 'radio' : 'checkbox'}" disabled>
+                    <input type="text" class="form-control option-label" value="Option ${optionIndex}">
+                    <span class="delete-option-icon">&times;</span>
+                </div>
+            `;
+        } else if (type === 'dropdown') {
+            optionHtml = `
+                <div class="option">
+                    <input type="text" class="form-control option-label" value="Option ${optionIndex}">
+                    <span class="delete-option-icon">&times;</span>
+                </div>
+            `;
+        }
+        container.append(optionHtml);
+    }
+
+    // Function to create a new form section
+    function createFormSection() {
+        let newSection = `
+            <div class="form-section" data-index="${index}">
+                <div class="header-row">
+                    ${index === 1 ? '<div class="violet-border"></div>' : ''}
+                    <textarea class="form-control untitled-question" placeholder="Untitled Question" rows="1"></textarea>
+                    <select class="custom-select">
+                        <option value="short-answer">Short Answer</option>
+                        <option value="paragraph">Paragraph</option>
+                        <option value="multiple-choice">Multiple Choice</option>
+                        <option value="checkboxes">Checkboxes</option>
+                        <option value="dropdown">Dropdown</option>
+                    </select>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="required-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="delete-section-icon"><i class="fas fa-trash-alt"></i></span>
+                </div>
+                <div class="options-container"></div>
+            </div>
+        `;
+        $('#form-container').append(newSection);
+        index++;
+        positionAddSectionButton();
+    }
+
+    // Position the "Add Section" button dynamically
+    function positionAddSectionButton() {
+        if (activeSection) {
+            let position = activeSection.position();
+            let buttonWidth = $('#add-section-btn').outerWidth();
+            let buttonHeight = $('#add-section-btn').outerHeight();
+
+            $('#add-section-btn').css({
+                position: 'absolute',
+                left: position.left - buttonWidth - 47 + 'px',
+                top: position.top + activeSection.height() / 2 - buttonHeight / 2 + 'px'
+            });
+        }
+    }
+
+    // Event listener for "Add Section" button
+    $('#add-section-btn').on('click', function() {
+        createFormSection();
+        $('.form-section').removeClass('active');
+        activeSection = $('.form-section').last();
+        activeSection.addClass('active');
+        positionAddSectionButton();
+    });
+
+    // Event listener for changing question type
+    $(document).on('change', '.custom-select', function() {
+        let type = $(this).val();
+        let container = $(this).closest('.form-section').find('.options-container');
+        container.empty();
+
+        $(this).closest('.form-section').find('.add-option-btn').remove();
+
+        if (type === 'short-answer') {
+            container.append('<input type="text" class="form-control" disabled placeholder="Short answer text">');
+        } else if (type === 'paragraph') {
+            container.append('<textarea class="form-control" disabled placeholder="Paragraph text"></textarea>');
+        } else {
+            addOption(type, container);
+            $(this).closest('.form-section').append('<button class="btn btn-secondary add-option-btn">Add Option</button>');
+        }
+    });
+
+    // Event listener for adding an option
+    $(document).on('click', '.add-option-btn', function() {
+        let type = $(this).closest('.form-section').find('.custom-select').val();
+        let container = $(this).closest('.form-section').find('.options-container');
+        addOption(type, container);
+    });
+
+    // Event listener for deleting a section
+    $(document).on('click', '.delete-section-icon', function() {
+        let section = $(this).closest('.form-section');
+        let prevSection = section.prev('.form-section');
+        let nextSection = section.next('.form-section');
+        section.remove();
+        if (section.hasClass('active')) {
+            activeSection = null;
+        }
+        if (prevSection.length > 0) {
+            prevSection.find('.delete-section-icon').appendTo(prevSection.find('.form-section'));
+            activeSection = prevSection;
+        } else if (nextSection.length > 0) {
+            nextSection.find('.delete-section-icon').appendTo(nextSection.find('.form-header'));
+            activeSection = nextSection;
+        }
+        positionAddSectionButton();
+    });
+
+    // Event listener for deleting an option
+    $(document).on('click', '.delete-option-icon', function() {
+        $(this).closest('.option').remove();
+    });
+
+    // Event listener for required toggle button
+    $(document).on('click', '.required-toggle', function() {
+        $(this).closest('.form-section').toggleClass('required');
+    });
+
+    // Event listener for preview button
+    $('#preview-btn').on('click', function() {
+        let previewWindow = window.open('', '_blank');
+        let previewContent = `
+            <html>
+            <head>
+                <title>Form Preview</title>
+                <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+                <style>
+                    body { background-color: rgb(240, 235, 248); }
+                    .container { margin-top: 30px; }
+                    .form-section {background-color: white;width: 56%;margin-bottom: 30px;margin-left: 240px;padding: 20px;position: relative;align-items: center;border-radius: 10px;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+                    .form-header {background-color: white;padding: 20px;margin-bottom: 10px;margin-left: 240px;border-radius: 10px 10px 0 0;display: flex;justify-content: space-between;align-items: center; position: relative;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);border-top: 10px solid rgb(103, 58, 183);width: 56%; }
+                    .form-section h2 { text-align: center; margin-bottom: 30px; }
+                    .form-section .question-section { margin-bottom: 20px; } /* Add margin-bottom to the question section */
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="form-header">
+                        <h2>Untitled Form</h2>
+                    </div>
+        `;
+        $('.form-section').each(function() {
+            previewContent += '<div class="form-section">';
+            previewContent += '<div class="question-section">';
+            previewContent += '<textarea class="form-control question-label" disabled>' + $(this).find('.untitled-question').val() + '</textarea>';
+            previewContent += '</div>';
+            let type = $(this).find('.custom-select').val();
+            let optionsContainer = $(this).find('.options-container');
+
+            if (type === 'multiple-choice') {
+                optionsContainer.find('.option').each(function() {
+                    previewContent += `
+                        <div class="option">
+                            <input type="radio" name="option-${index}">
+                            <label>${$(this).find('.option-label').val()}</label>
+                        </div>
+                    `;
+                });
+            } else if (type === 'checkboxes') {
+                optionsContainer.find('.option').each(function() {
+                    previewContent += `
+                        <div class="option">
+                            <input type="checkbox">
+                            <label>${$(this).find('.option-label').val()}</label>
+                        </div>
+                    `;
+                });
+            } else if (type === 'short-answer') {
+                previewContent += '<input type="text" class="form-control" placeholder="Short answer text">';
+            } else if (type === 'paragraph') {
+                previewContent += '<textarea class="form-control" placeholder="Paragraph text"></textarea>';
+            } else if (type === 'dropdown') {
+                let dropdownHtml = '<select class="form-control">';
+                optionsContainer.find('.option .option-label').each(function() {
+                    dropdownHtml += `<option>${$(this).val()}</option>`;
+                });
+                dropdownHtml += '</select>';
+                previewContent += dropdownHtml;
+            }
+            previewContent += '</div>';
+        });
+        previewContent += `
+                    <button id="submit-btn" class="btn btn-success" style="margin-left: 240px; margin-top: 20px">Submit</button>
+                </div>
+            </body>
+            </html>
+        `;
+        previewWindow.document.write(previewContent);
+        previewWindow.document.close();
+    });
+
+    // Event listener for clicking on a form section
+
+
+    $(document).on('click', '.form-section', function() {
+        $('.form-section').removeClass('active');
+        $(this).addClass('active');
+        activeSection = $(this);
+        positionAddSectionButton();
+    });
+
+    // Submit button click event to save data to the database
+    $(document).on('click', '#submit-btn', function() {
+        let formData = [];
+
+        // Iterate through each form section
+        $('.form-section').each(function() {
+            let sectionData = {
+                question: $(this).find('.untitled-question').val(),
+                type: $(this).find('.custom-select').val(),
+                required: $(this).find('.required-toggle').prop('checked') ? 1 : 0,
+                options: []
+            };
+
+            // Iterate through options if any
+            $(this).find('.option').each(function() {
+                sectionData.options.push($(this).find('.option-label').val());
+            });
+
+            formData.push(sectionData);
+        });
+
+        // Ajax call to submit data
+        $.ajax({
+            url: "<?php echo base_url('form/submit_form_data'); ?>",
+            type: "POST",
+            data: {
+                formData: formData
+            },
+            success: function(response) {
+                alert(response); // Handle response from server
+            }
+        });
+    });
+
+    // Initialize sortable feature for form sections
+    $('#form-container').sortable({
+        placeholder: 'ui-state-highlight',
+        start: function (event, ui) {
+            ui.placeholder.height(ui.item.height());
+        },
+        stop: function (event, ui) {
+            positionAddSectionButton();
+        }
+    });
+
+    $('#form-container').disableSelection();
+});
+```
+
+### Step 2: Create Controllers and Models in CodeIgniter
+
+#### 1. Controller: Form.php
+
+```php
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Form extends CI_Controller {
+
+    public function __construct() {
+        parent::__construct();
+        $this->load->model('Form_model');
+    }
+
+    public function index() {
+        // Load view for form creation
+        $this->load->view('create_form');
+    }
+
+    public function submit_form_data() {
+        $formData = $this->input->post('formData');
+
+        // Example to get user ID (you should have this implemented in your authentication flow)
+        $userId = 1; // Replace with your actual user ID retrieval logic
+
+        // Insert form data into database using model
+        foreach ($formData as $section) {
+            $formId = $this->Form_model->insert_form($userId, $section['question']);
+
+            // Insert questions into database
+            $this->Form_model->insert_question($formId, $section['type'], $section['required']);
+
+            // Insert options into database if any
+            if (!empty($section['options'])) {
+                foreach ($section['options'] as $option) {
+                    $this->Form_model->insert_option($formId, $option);
+                }
+            }
+        }
+
+        echo "Form data submitted successfully!";
+    }
+}
+?>
+```
+
+#### 2. Model: Form_model.php
+
+```php
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Form_model extends CI_Model {
+
+    public function insert_form($userId, $description) {
+        // Insert form data and return form ID
+        $data = array(
+            'user_id' => $userId,
+            'description' => $description,
+            'created_at' => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('forms', $data);
+        return $this->db->insert_id();
+    }
+
+    public function insert_question($formId, $type, $required) {
+        // Insert question data
+        $data = array(
+            'form_id' => $formId,
+            'type' => $type,
+            'required' => $required,
+            'created_at' => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('questions', $data);
+    }
+
+    public function insert_option($formId, $text) {
+        // Insert option data
+        $data = array(
+            'question_id' => $formId, // Assuming form ID here, adjust as per your structure
+            'text' => $text
+        );
+        $this->db->insert('options', $data);
+    }
+
+}
+?>
+```
+
+### Step 3: Create Views
+
+#### 1. create_form.php (View for form creation)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Form Clone</title>
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
+    <style>
+        .navbar-custom {
+            background-color: rgb(103, 58, 183);
+            color: white;
+            border-radius: 0;
+        }
+
+        .navbar-custom .navbar-brand {
+            color: white;
+            font-size: 18px;
+        }
+
+        .navbar-custom .navbar-nav > li > a {
+            color: white;
+            font-size: 16px;
+        }
+
+        #submit-btn {
+            margin-top: 20px;
+            float: left;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-inverse navbar-custom">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="<?php echo base_url(); ?>home/index2">Google Forms</a>
+                <a class="navbar-brand" href="<?php echo base_url(); ?>home/index3">Home</a>
+                <a class="navbar-brand" href="<?php echo base_url(); ?>home/index1">About</a>
+            </div>
+            <div id="navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <a class="navbar-brand" href="<?php echo base_url(); ?>users/logout">Logout</a>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Form Creation Section -->
+    <div class="container">
+        <div class="form-header">
+            <button id="preview-btn" class="btn btn-info"><i class="fas fa-eye"></i></button>
+            <h2>Untitled Form</h2>
+            <button id="add-section-btn" class="btn btn-primary">+</button>
+        </div>
+        <div id="form-container"></div>
+        <button id="submit-btn" class="btn btn-success" style="margin-left: 240px; margin-top: 20px">Submit</button>
+    </div>
+
+    <!-- JavaScript files -->
+    <script src="<?php echo base_url('assets/js/jquery.min.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/js/bootstrap.min.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/js/jquery-ui.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/js/scripts.js'); ?>"></script>
+</body>
+</html>
+```
+
+### Step 4: Database Structure
+
+Ensure your database tables (`users`, `forms`, `questions`, `options`) are set up according to your described structure:
+
+- `users` table: id (primary key), username, email, password, created_at
+- `forms` table: id (primary key), user_id (foreign key to users.id), description, created_at
+- `questions` table: id (primary key), form_id (foreign key to forms.id), text, type, required, created_at
+- `options` table: id (primary key), question_id (foreign key to questions.id), text
+
+### Step 5: Configure CodeIgniter
+
+Ensure your CodeIgniter configuration (`config/config.php` and `config/database.php`) is set up correctly with base URL, database connection settings, and any other necessary configurations.
+
+### Step 6: Testing
+
+- Access the form creation page (`http://yourdomain.com/form`) and create a form.
+- Click on the "Submit" button to save the form data.
+- Verify that the data is correctly saved in your database tables.
+
+This setup assumes you have basic knowledge of CodeIgniter and have configured your environment correctly. Adjust paths (`base_url()`) and database configurations as per your setup.
