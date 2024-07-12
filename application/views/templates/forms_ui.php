@@ -18,19 +18,18 @@
 
         .navbar-custom .navbar-brand {
             color: white;
-            font-size: 18px; /* Adjust font size for navbar links */
+            font-size: 18px;
         }
 
-        .navbar-custom .navbar-nav > li > a {
+        .navbar-custom .navbar-nav>li>a {
             color: white;
-            font-size: 16px; /* Adjust font size for navbar links */
+            font-size: 16px;
         }
 
-        /* Additional styling for submit button */
         #submit-btn {
             margin-top: 20px;
-            float: left; /* Align button to the left */
-            clear: both; /* Clear float to ensure proper layout */
+            float: left;
+            clear: both;
         }
     </style>
 </head>
@@ -59,14 +58,15 @@
         </div>
         <div id="form-container"></div>
 
-        <!-- Submit button -->
-        <button class="btn btn-success" style="margin-left: 240px; margin-top: 20px">Submit</button>
+        <button id="submit-btn" class="btn btn-success" style="margin-left: 240px; margin-top: 20px">Submit</button>
+
     </div>
 
     <script src="<?php echo base_url('assets/js/jquery.min.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/bootstrap.min.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/jquery-ui.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/scripts.js'); ?>"></script>
+    
 </body>
 
 </html>

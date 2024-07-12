@@ -34,7 +34,13 @@ class Home extends CI_Controller
 		$this->load->view('templates/footer');
 }
 
-public function create_form(){
+public function design_form(){
 	$this->load->view('templates/forms_ui');
+}
+public function title(){
+	$this->load->view('templates/header');
+	$this->load->view('templates/form_title');
+	$this->load->view('templates/footer');
+
 }
 }

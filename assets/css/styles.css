@@ -7,7 +7,20 @@ body {
     position: relative;
     margin-top: 30px;
 }
-
+.form_container_top{
+    box-sizing: border-box;
+    margin-top: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #f4f4f9;
+    color: black;
+    height: 20px;
+  }
 /* Form header styles */
 .form-header {
     background-color: white;

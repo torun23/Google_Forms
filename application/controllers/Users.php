@@ -27,8 +27,14 @@ class Users extends CI_Controller
         }
 
     }
-    //login user
 
+
+/**
+ * function to login into google forms
+ * @param  null
+ * @return mixed(data return type)
+ * @author torun
+ */
     public function login()
     {
         $data['title'] = 'Sign In';
@@ -48,22 +54,24 @@ class Users extends CI_Controller
             $password = md5($this->input->post('password'));
             $this->load->model('user_model');
             // Login user
-            $user_id = $this->user_model->login($username, $password);
+            $person_id = $this->user_model->login($username, $password);
 
-            if ($user_id) {
+            if ($person_id) {
                 // Create session
                 $user_data = array(
-                    'user_id' => $user_id,
+                    'user_id' => $person_id,
                     'username' => $username,
                     'logged_in' => true
                 );
 
                 $this->session->set_userdata($user_data);
+                $person_id = $this->session->userdata('user_id');
+
 
                 // Set message
                 $this->session->set_flashdata('user_loggedin', 'You are now logged in');
 
-                redirect('start');
+                redirect('title_desc');
             } else {
                 // Set message
                 $this->session->set_flashdata('login_failed', 'Login is invalid');

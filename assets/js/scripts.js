@@ -201,7 +201,7 @@ K    });
             previewContent += '</div>';
         });
         previewContent += `
-                    <button class="btn btn-success" style="margin-left: 240px; margin-top: 20px">Submit</button>
+                        <button  class="btn btn-success" style="margin-left: 240px; margin-top: 20px">Submit</button>
                 </div>
             </body>
             </html>
@@ -209,6 +209,7 @@ K    });
         previewWindow.document.write(previewContent);
         previewWindow.document.close();
     });
+
 
     // Activate the section;repositions add section button
     $(document).on('click', '.form-section', function() {
@@ -227,6 +228,53 @@ K    });
             positionAddSectionButton();
         }
     });
+
+    $('#submit-btn').on('click', function() {
+        let formData = collectFormData();
+
+        $.ajax({
+            url: '<?php echo base_url(); ?>form/submit',
+            type: 'POST',
+            data: JSON.stringify(formData),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function(response) {
+                alert('Form submitted successfully!');
+                console.log(response);
+            },
+            error: function(error) {
+                alert('Error submitting form!');
+                console.log(error);
+            }
+        });
+    });
+
+    function collectFormData() {
+        let formData = [];
+
+        // let formId = $('#form-id').val();
+
+        $('.form-section').each(function() {
+            let questionText = $(this).find('.untitled-question').val();
+            let type = $(this).find('.custom-select').val();
+            let required = $(this).find('.required-toggle').is(':checked');
+            let options = [];
+
+            $(this).find('.option-label').each(function() {
+                options.push($(this).val());
+            });
+
+            formData.push({
+                // form_id: formId,
+                text: questionText,
+                type: type,
+                required: required,
+                options: options
+            });
+        });
+
+        return formData;
+    }
 
     $('#form-container').disableSelection();
 });
