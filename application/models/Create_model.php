@@ -1,11 +1,8 @@
 
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
+class Create_model extends CI_Model {
 
-class Create_model extends CI_Model
-{
-    public function details()
-    {
+    public function details() {
         // Retrieve user_id from session
         $user_id = $this->session->userdata('user_id');
 
@@ -18,7 +15,13 @@ class Create_model extends CI_Model
 
         // Insert data into forms table
         $this->db->insert('forms', $data);
-    }
-}
 
+        // Store form_id in session
+        $formId = $this->db->insert_id();
+        $this->session->set_userdata('form_id', $formId);
+
+
+    }
+
+}
 ?>

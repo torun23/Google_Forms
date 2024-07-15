@@ -35,6 +35,9 @@
 </head>
 
 <body>
+<script>
+                        var base_url = '<?php echo base_url(); ?>';
+    </script>
     <nav class="navbar navbar-inverse navbar-custom">
         <div class="container">
             <div class="navbar-header">

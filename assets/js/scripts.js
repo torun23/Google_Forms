@@ -228,16 +228,39 @@ K    });
             positionAddSectionButton();
         }
     });
+    function collectFormData() {
+        var formData = {
+        questions:[]
+        };
 
+        $('.form-section').each(function() {
+            var questionData = {
+            text : $(this).find('.untitled-question').val(),
+            type : $(this).find('.custom-select').val(),
+            required :$(this).find('.required-toggle').is(':checked'),
+             options:[]
+            };
+
+
+            $(this).find('.option-label').each(function() {
+                questionData.options.push($(this).val());
+            });
+
+        formData.questions.push(questionData);
+
+        });
+        console.log(formData);
+        return formData;
+    }
     $('#submit-btn').on('click', function() {
         let formData = collectFormData();
-
+        console.log(formData);
+    
         $.ajax({
-            url: '<?php echo base_url(); ?>form/submit',
+            url: base_url + 'New_form_controller/submit_form',
             type: 'POST',
-            data: JSON.stringify(formData),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
+            data: {formData:formData},
+            dataType: 'JSON',
             success: function(response) {
                 alert('Form submitted successfully!');
                 console.log(response);
@@ -248,33 +271,7 @@ K    });
             }
         });
     });
-
-    function collectFormData() {
-        let formData = [];
-
-        // let formId = $('#form-id').val();
-
-        $('.form-section').each(function() {
-            let questionText = $(this).find('.untitled-question').val();
-            let type = $(this).find('.custom-select').val();
-            let required = $(this).find('.required-toggle').is(':checked');
-            let options = [];
-
-            $(this).find('.option-label').each(function() {
-                options.push($(this).val());
-            });
-
-            formData.push({
-                // form_id: formId,
-                text: questionText,
-                type: type,
-                required: required,
-                options: options
-            });
-        });
-
-        return formData;
-    }
+    
 
     $('#form-container').disableSelection();
 });
