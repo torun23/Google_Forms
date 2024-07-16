@@ -41,7 +41,7 @@
     <nav class="navbar navbar-inverse navbar-custom">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="<?php echo base_url(); ?>home/index2">Google Forms</a>
+                <a class="navbar-brand" href="<?php echo base_url(); ?>Form_controller/index_forms">Google Forms</a>
                 <a class="navbar-brand" href="<?php echo base_url(); ?>home/index3">Home</a>
                 <a class="navbar-brand" href="<?php echo base_url(); ?>home/index1">About</a>
             </div>

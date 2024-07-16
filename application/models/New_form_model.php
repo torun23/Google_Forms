@@ -5,7 +5,8 @@ class New_form_model extends CI_Model {
         if (!$formId) {
             return false; // Handle error if formId is not valid
         }
-        foreach ($formData['questions'] as $question) {
+        $questions_array = $formData['questions'];
+        foreach ($questions_array as $question) {
             $questionData = [
             'form_id' => $formId,
             'text' => $question['text'],       

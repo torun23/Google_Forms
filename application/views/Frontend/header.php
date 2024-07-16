@@ -8,7 +8,9 @@
     <title>Google Forms</title>
     <link rel="stylesheet" href="https://bootswatch.com/3/flatly/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/header_styles.css">
-    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 </head>
 
 <body style = "background-color: rgb(240,235,248);" >
@@ -19,15 +21,13 @@
                 <a class="navbar-brand" href="<?php echo base_url(); ?>Form_controller/index_forms">Google Forms</a>
             </div>
             <?php endif; ?>
-
             <div id="navbar">
                 <ul class="nav navbar-nav">
+                
                     <li><a href="<?php echo base_url(); ?>home/index3">Home</a></li>
                     <li><a href="<?php echo base_url(); ?>home/index1">About</a></li>
-                    <?php if ($this->session->userdata('logged_in')): ?>
                     <li><a href="<?php echo base_url(); ?>Publish_controller/list_user_published_forms">Published Forms</a></li>
                     <li><a href="">Responses</a></li>
-                    <?php endif; ?>
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -66,4 +66,4 @@
 
 
     </div>
-    <div>
+    <div></div>

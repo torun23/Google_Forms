@@ -71,7 +71,7 @@ class Users extends CI_Controller
                 // Set message
                 $this->session->set_flashdata('user_loggedin', 'You are now logged in');
 
-                redirect('title_desc');
+                redirect('forms_home');
             } else {
                 // Set message
                 $this->session->set_flashdata('login_failed', 'Login is invalid');
