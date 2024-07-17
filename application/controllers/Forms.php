@@ -27,5 +27,29 @@ class Forms extends CI_Controller
         // redirect('home/preview_forms');
    
     }
+    public function response_preview($form_id)
+    {
+        // Load the model that handles the form data
+        $this->load->model('preview_model');
+
+        // Fetch the form details
+        $form = $this->preview_model->get_form($form_id);
+
+        // Fetch the questions for the form
+        $questions = $this->preview_model->get_questions($form_id);
+
+        // Fetch the options for each question
+        foreach ($questions as &$question) {
+            $question->options = $this->preview_model->get_options($question->id);
+        }
+
+        // Pass the data to the view
+        $data['form'] = $form;
+        $data['questions'] = $questions;
+
+        $this->load->view('response_submit', $data);
+   
+    }
+
 
 }

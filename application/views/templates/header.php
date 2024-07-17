@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/header_styles.css">
     <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
 </head>
-
-<body style = "background-color: rgb(240,235,248);" >
+ 
+<body class = "body_header_bg" >
     <nav class="navbar navbar-inverse" style="background-color: rgb(103, 58, 183);" >
         <div class="container" style="background-color: rgb(103, 58, 183);">
         <?php if ($this->session->userdata('logged_in')): ?>
@@ -26,7 +26,7 @@
                     <li><a href="<?php echo base_url(); ?>home/index1">About</a></li>
                     <?php if ($this->session->userdata('logged_in')): ?>
                     <li><a href="<?php echo base_url(); ?>Publish_controller/list_user_published_forms">Published Forms</a></li>
-                    <li><a href="">Responses</a></li>
+                    <li><a href="<?php echo base_url(); ?>Response_submit/submit_form">Responses</a></li>
                     <?php endif; ?>
 
                 </ul>

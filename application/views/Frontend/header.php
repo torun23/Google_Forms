@@ -27,7 +27,7 @@
                     <!-- <li><a href="<?php echo base_url(); ?>home/index3">Home</a></li> -->
                     <li><a href="<?php echo base_url(); ?>home/index1">About</a></li>
                     <li><a href="<?php echo base_url(); ?>Publish_controller/list_user_published_forms">Published Forms</a></li>
-                    <li><a href="">Responses</a></li>
+                    <li><a href="<?php echo base_url(); ?>Response_submit/submit_form">Responses</a></li>
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

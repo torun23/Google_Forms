@@ -10,7 +10,7 @@
         body { background-color: rgb(240, 235, 248); }
         .container { margin-top: 30px; }
         .form-section { background-color: white; width: 56%; margin-bottom: 30px; margin-left: 240px; padding: 20px; position: relative; align-items: center; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
-        .form-header { background-color: white; padding: 20px; margin-bottom: 10px; margin-left: 240px; border-radius: 10px 10px 0 0; display: flex; justify-content: space-between; align-items: center; position: relative; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-top: 10px solid rgb(103, 58, 183); width: 56%; }
+        .form-header { background-color: white; padding: 20px; margin-bottom: 10px; margin-left: 240px; border-radius: 10px 10px 0 0; display:flex ;flex-direction: column; justify-content: space-between; align-items: left; position: relative; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-top: 10px solid rgb(103, 58, 183); width: 56%; }
         .form-section h2 { text-align: center; margin-bottom: 30px; }
         .form-section .question-section { margin-bottom: 20px; }
     </style>
@@ -66,7 +66,10 @@
 
 <div class="container">
     <div class="form-header">
-        <h2>Form Preview: <?php echo $form->title; ?></h2>
+        <h2><?php echo $form->title; ?></h2>
+
+        <h4><?php echo $form->description; ?></h4>
+
     </div>
     <div class="form-section">
         <?php foreach ($questions as $question): ?>
@@ -99,8 +102,9 @@
                 <?php endif; ?>
             </div>
         <?php endforeach; ?>
-        <a href="<?php echo base_url('Publish_controller/publish_form/' . $form->id); ?>" class="btn btn-success" style="margin-top: 20px">Publish</a>
     </div>
+    <a href="<?php echo base_url('Publish_controller/publish_form/' . $form->id); ?>" class="btn btn-success" style="margin-top: 20px; position: relative; left: 240px;">Publish</a>
+
 </div>
 
 <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>

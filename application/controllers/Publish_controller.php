@@ -6,7 +6,7 @@ class Publish_controller extends CI_Controller {
 // Method to publish a form
 public function publish_form($form_id) {
     // Generate a unique link
-    $response_link = base_url("forms/preview/" . $form_id);
+    $response_link = base_url("forms/response_preview/" . $form_id);
 $this->load->model('Publish_model');
     // Update is_published to 1 and set the response link
     $this->Publish_model->update_form($form_id, [
