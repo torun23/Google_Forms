@@ -27,9 +27,9 @@
                         <tbody>
                             <?php foreach ($forms as $row): ?>
                                 <tr>
-                                    <td><?php echo $row->id; ?></td>
+                                    <td><a href="<?php echo base_url('Response_submit/view/' . $row->id); ?>"><?php echo $row->id; ?></td>
                                     <td>
-                                        <a href="<?php echo base_url('forms/preview/' . $row->id); ?>"><?php echo $row->title; ?></a>
+                                        <a href="<?php echo base_url('forms/preview_back/' . $row->id); ?>"><?php echo $row->title; ?></a>
                                     </td>
                                     <td><?php echo $row->description; ?></td>
                                     <td>

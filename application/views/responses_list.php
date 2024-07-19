@@ -33,7 +33,11 @@
                         <tbody>
                             <?php foreach ($responses as $response): ?>
                                 <tr>
-                                    <td><?php echo $response->response_id; ?></td>
+                                    <td>
+                                        <a href="<?php echo base_url('responses/view/' . $response->response_id); ?>">
+                                            <?php echo $response->response_id; ?>
+                                        </a>
+                                    </td>
                                     <td><?php echo $response->username; ?></td>
                                     <td><?php echo $response->submitted_at; ?></td>
                                 </tr>

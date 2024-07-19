@@ -48,6 +48,6 @@
         </div>
     <?php endforeach; ?>
 
-    <a href="<?php echo base_url('Publish_controller/publish_form/'.$form->id); ?>" class="btn btn-success" style="margin-top: 20px; position: relative; left: 240px;">Publish</a>
+    <a href="<?php echo base_url('Publish_controller/list_user_published_forms'); ?>" class="btn btn-success" style="margin-top: 20px; position: relative; left: 240px;">Back</a>
 </div>
                             

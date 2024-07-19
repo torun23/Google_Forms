@@ -10,7 +10,7 @@ public function update_form($form_id, $data) {
 // Method to retrieve published forms by user
 public function get_published_forms_by_user($user_id) {
     $this->db->where('user_id', $user_id);
-    $this->db->where('is_published', 1); // Ensure only published forms are retrieved
+    $this->db->where('is_published', 1); 
     $query = $this->db->get('forms');
     return $query->result();
 }

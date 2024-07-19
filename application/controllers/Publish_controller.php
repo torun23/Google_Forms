@@ -6,6 +6,10 @@ class Publish_controller extends CI_Controller {
 // Method to publish a form
 public function publish_form($form_id) {
     // Generate a unique link
+    if (!$this->session->userdata('logged_in')) {
+        // If not logged in, redirect to login page
+        redirect('users/login');
+    }
     $response_link = base_url("forms/response_preview/" . $form_id);
 $this->load->model('Publish_model');
     // Update is_published to 1 and set the response link
@@ -20,12 +24,16 @@ $this->load->model('Publish_model');
 
 // Method to list published forms of a user
 public function list_user_published_forms() {
+    if (!$this->session->userdata('logged_in')) {
+        // If not logged in, redirect to login page
+        redirect('users/login');
+    }
     $user_id = $this->session->userdata('user_id');
     $this->load->model('Publish_model');
     $data['forms'] = $this->Publish_model->get_published_forms_by_user($user_id);
 
-    $this->load->view('Frontend/header');
+    $this->load->view('templates/header');
     $this->load->view('publish_view', $data);
-    $this->load->view('Frontend/footer');
+    $this->load->view('templates/footer');
 }
 }

@@ -4,21 +4,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class New_form_controller extends CI_Controller {
 
     public function submit_form() {
-        // no need to decode the data
+        if (!$this->session->userdata('logged_in')) {
+            // If not logged in, redirect to login page
+            redirect('users/login');
+        }
+        // Decode the formData from the POST request
         $formData = $this->input->post('formData');
 
-
-      $formId = $this->session->userdata('form_id');
+        // Check if form_id is set in session
+        $formId = $this->session->userdata('form_id');
         if ($formId) {
-            // Save questions and options associated with the form_id
+            // Load the model and save form data
             $this->load->model('new_form_model');
-            $this->new_form_model->save_form_data($formId, $formData);
+            $saveStatus = $this->new_form_model->save_form_data($formId, $formData);
 
-            echo json_encode(['status' => 'success', 'message' => 'Form data submitted successfully']);
+            if ($saveStatus) {
+                echo json_encode(['status' => 'success', 'message' => 'Form data submitted successfully']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Failed to save form data']);
+            }
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to submit form data']);
+            echo json_encode(['status' => 'error', 'message' => 'Form ID not found in session']);
         }
     }
-
 }
 ?>

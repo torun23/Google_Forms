@@ -32,5 +32,35 @@ class Response_model extends CI_Model {
         $this->db->group_by('responses.response_id, users.username');
         $query = $this->db->get();
         return $query->result();
+    }    public function get_responses($form_id) {
+        $this->db->where('form_id', $form_id);
+        $query = $this->db->get('responses');
+        return $query->result();
+    }
+
+
+    // Method to get response details
+    public function get_response($response_id) {
+        $this->db->where('response_id', $response_id);
+        $query = $this->db->get('responses');
+        return $query->row();
+    }
+
+    // Method to get questions and answers for a response
+    public function get_questions_and_answers($response_id) {
+        $this->db->select('questions.id AS question_id, questions.text AS question_text, responses.answered_text');
+        $this->db->from('questions');
+        $this->db->join('responses', 'questions.id = responses.question_id');
+        $this->db->where('responses.response_id', $response_id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function get_form_by_response($response_id) {
+        $this->db->select('forms.title, forms.description');
+        $this->db->from('forms');
+        $this->db->join('responses', 'forms.id = responses.form_id');
+        $this->db->where('responses.response_id', $response_id);
+        $query = $this->db->get();
+        return $query->row();
     }
 }

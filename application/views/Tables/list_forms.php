@@ -14,7 +14,7 @@
                 </div>
                 <div class="card-body">
                     <!-- here your table will occur -->
-                    <table id="basetable1" class="table table-bordered">
+                    <table id = "basetable1" class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Form_Id</th>
@@ -24,7 +24,6 @@
                                 <th>Status</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
-
                             </tr>
                         </thead>
                         <tbody>
@@ -41,7 +40,7 @@
                                     </td>
 
                                     <td>
-                                        <a href="" class="btn btn-success btn-sm">Edit</a>
+                                        <a href="<?php echo base_url('Form_controller/edit_form/' . $row->id); ?>" class="btn btn-success btn-sm">Edit</a>
                                     </td>
                                     <td>
                                         <a href="<?php echo base_url('forms/delete/' . $row->id); ?>"

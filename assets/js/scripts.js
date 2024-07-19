@@ -1,29 +1,30 @@
 $(document).ready(function() {
     let index = 1;
     let activeSection = null;
-// Add option function
-    function addOption(type, container) {
-        let optionIndex = container.children().length + 1;
-        let optionHtml;
-        if (type === 'multiple-choice' || type === 'checkboxes') {
-            optionHtml = `
-                <div class="option">
-                    <input type="${type === 'multiple-choice' ? 'radio' : 'checkbox'}" disabled>
-                    <input type="text" class="form-control option-label" value="Option ${optionIndex}">
-                    <span class="delete-option-icon">&times;</span>
-                </div>
-            `;
-        } else if (type === 'dropdown') {
-            optionHtml = `
-                <div class="option">
-                    <input type="text" class="form-control option-label" value="Option ${optionIndex}">
-                    <span class="delete-option-icon">&times;</span>
-                </div>
-            `;
-        }
-        container.append(optionHtml);
+
+function addOption(type, container) {
+    // let optionIndex = container.children().length + 1;
+    let optionHtml;
+    if (type === 'multiple-choice' || type === 'checkboxes') {
+        optionHtml = `
+            <div class="option">
+                <input type="${type === 'multiple-choice' ? 'radio' : 'checkbox'}" disabled>
+                <input type="text" class="form-control option-label" >
+                <span class="delete-option-icon">&times;</span>
+            </div>
+        `;
+    } 
+    else if (type === 'dropdown') {
+        optionHtml = `
+            <div class="option">
+                <input type="text" class="form-control option-label">
+                <span class="delete-option-icon">&times;</span>
+            </div>
+        `;
     }
-//Form section function
+    container.append(optionHtml);
+}
+
     function createFormSection() {
         let newSection = `
             <div class="form-section" data-index="${index}">
@@ -48,7 +49,6 @@ $(document).ready(function() {
         `;
         $('#form-container').append(newSection);
         index++;
-
         positionAddSectionButton();
     }
 
@@ -63,11 +63,9 @@ $(document).ready(function() {
                 left: position.left - buttonWidth - 47 + 'px',
                 top: position.top + activeSection.height() / 2 - buttonHeight / 2 + 'px'
             });
-        } 
-  
+        }
     }
-//Event handler is triggered
-// creates a new form section;sets it as active;respositions the add section button
+
     $('#add-section-btn').on('click', function() {
         createFormSection();
         $('.form-section').removeClass('active');
@@ -75,12 +73,11 @@ $(document).ready(function() {
         activeSection.addClass('active');
         positionAddSectionButton();
     });
-// It updates the options container based on the selected type, adding the necessary input fields or buttons.
+
     $(document).on('change', '.custom-select', function() {
         let type = $(this).val();
         let container = $(this).closest('.form-section').find('.options-container');
         container.empty();
-
         $(this).closest('.form-section').find('.add-option-btn').remove();
 
         if (type === 'short-answer') {
@@ -92,15 +89,13 @@ $(document).ready(function() {
             $(this).closest('.form-section').append('<button class="btn btn-secondary add-option-btn">Add Option</button>');
         }
     });
-// add option event handler
-// adds a new option to the options container and updates the option numbers
+
     $(document).on('click', '.add-option-btn', function() {
         let type = $(this).closest('.form-section').find('.custom-select').val();
         let container = $(this).closest('.form-section').find('.options-container');
         addOption(type, container);
-
     });
-// removes the section;updates the active section;repositions add section button
+
     $(document).on('click', '.delete-section-icon', function() {
         let section = $(this).closest('.form-section');
         let prevSection = section.prev('.form-section');
@@ -117,27 +112,20 @@ $(document).ready(function() {
             nextSection.find('.delete-section-icon').appendTo(nextSection.find('.form-header'));
             activeSection = nextSection;
         }
-
         positionAddSectionButton();
     });
 
-// delele option
     $(document).on('click', '.delete-option-icon', function() {
         let option = $(this).closest('.option');
         let container = option.closest('.options-container');
         option.remove();
 
-    });
-       // Event handler for required toggle button
-    $(document).on('click', '.required-toggle', function() {
-        $(this).closest('.form-section').toggleClass('required');
-    });
+   });
+
     $(document).on('click', '.required-toggle', function() {
         $(this).closest('.form-section').toggleClass('required');
     });
 
-
-    // Preview button functionality
     $('#preview-btn').on('click', function() {
         let previewWindow = window.open('', '_blank');
         let previewContent = `
@@ -210,8 +198,6 @@ $(document).ready(function() {
         previewWindow.document.close();
     });
 
-
-    // Activate the section;repositions add section button
     $(document).on('click', '.form-section', function() {
         $('.form-section').removeClass('active');
         $(this).addClass('active');
@@ -228,6 +214,7 @@ $(document).ready(function() {
             positionAddSectionButton();
         }
     });
+
     function collectFormData() {
         var formData = {
         questions:[]
@@ -235,35 +222,62 @@ $(document).ready(function() {
 
         $('.form-section').each(function() {
             var questionData = {
-            text : $(this).find('.untitled-question').val(),
-            type : $(this).find('.custom-select').val(),
-            required :$(this).find('.required-toggle').is(':checked'),
-             options:[]
+                text: $(this).find('.untitled-question').val(),
+                type: $(this).find('.custom-select').val(),
+                required: $(this).find('.required-toggle').is(':checked'),
+                options: []
             };
-
 
             $(this).find('.option-label').each(function() {
                 questionData.options.push($(this).val());
             });
 
-        formData.questions.push(questionData);
-
+            formData.questions.push(questionData);
         });
         console.log(formData);
         return formData;
     }
+
+    function validateFormData(formData) {
+        for (let question of formData.questions) {
+            if (!question.text.trim()) {
+                return { isValid: false, message: 'All questions must have text.' };
+            }
+            if ((question.type === 'multiple-choice' || question.type === 'checkboxes' || question.type === 'dropdown') && question.options.length === 0) {
+                return { isValid: false, message: 'All options-based questions must have at least one option.' };
+            }
+            for (let option of question.options) {
+                if (!option.trim()) {
+                    return { isValid: false, message: 'All options must have text.' };
+                }
+            }
+        }
+        return { isValid: true };
+    }
+
     $('#submit-btn').on('click', function() {
         let formData = collectFormData();
         console.log(formData);
-    
+
+        let validation = validateFormData(formData);
+        if (!validation.isValid) {
+            alert(validation.message);
+            return;
+        }
+
         $.ajax({
             url: base_url + 'New_form_controller/submit_form',
             type: 'POST',
-            data: {formData:formData},
+            data: { formData: formData },
             dataType: 'JSON',
             success: function(response) {
-                alert('Form submitted successfully!');
-                console.log(response);
+                if (response.status === 'success') {
+                    alert('Form submitted successfully!');
+                    console.log(response);
+                } else {
+                    alert(response.message);
+                    console.log(response);
+                }
             },
             error: function(error) {
                 alert('Error submitting form!');
@@ -271,7 +285,6 @@ $(document).ready(function() {
             }
         });
     });
-    
 
     $('#form-container').disableSelection();
 });

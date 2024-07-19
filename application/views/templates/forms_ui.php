@@ -31,6 +31,10 @@
             float: left;
             clear: both;
         }
+        .container{
+            margin-top: 10px;
+
+        }
     </style>
 </head>
 
@@ -42,8 +46,6 @@
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="<?php echo base_url(); ?>Form_controller/index_forms">Google Forms</a>
-                <a class="navbar-brand" href="<?php echo base_url(); ?>home/index3">Home</a>
-                <a class="navbar-brand" href="<?php echo base_url(); ?>home/index1">About</a>
             </div>
             <div id="navbar">
                 <ul class="nav navbar-nav navbar-right">

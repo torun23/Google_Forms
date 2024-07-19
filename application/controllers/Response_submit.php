@@ -69,4 +69,28 @@ class Response_submit extends CI_Controller {
 
         redirect('Response_submit/view_responses/' . $response['form_id']);
     }
+    
+    
+        // Method to list responses for a form
+        public function list_responses($form_id) {
+            $this->load->model('Response_model');
+            $data['form'] = $this->Response_model->get_form($form_id);
+            $data['responses'] = $this->Response_model->get_responses($form_id);
+            
+            $this->load->view('Frontend/header');
+            $this->load->view('responses_list_view', $data);
+            $this->load->view('Frontend/footer');
+        }
+    
+        // Method to view questions and answers for a specific response
+        public function viewresponse($response_id) {
+            $this->load->model('Response_model');
+            $data['response'] = $this->Response_model->get_response($response_id);
+            $data['form'] = $this->Response_model->get_form_by_response($response_id); // Get form details
+            $data['questions'] = $this->Response_model->get_questions_and_answers($response_id);
+            
+            $this->load->view('templates/header');
+            $this->load->view('response_details_view', $data);
+            $this->load->view('templates/footer');
+        }
 }

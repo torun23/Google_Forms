@@ -3,6 +3,10 @@ class New_form extends CI_Controller
 {
     public function create_form()
     {
+        if (!$this->session->userdata('logged_in')) {
+            // If not logged in, redirect to login page
+            redirect('users/login');
+        }
         $data['title'] = 'Form Details';
         $this->form_validation->set_rules('title', 'Title', 'required');
         $this->form_validation->set_rules('description', 'Description', 'required');

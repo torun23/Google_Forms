@@ -9,6 +9,10 @@ class Form extends CI_Controller {
     }
 
     public function submit() {
+        if (!$this->session->userdata('logged_in')) {
+            // If not logged in, redirect to login page
+            redirect('users/login');
+        }
         $form_data = json_decode($this->input->raw_input_stream, true);
 
         if ($this->Form_model->save_form($form_data)) {

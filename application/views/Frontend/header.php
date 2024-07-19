@@ -25,9 +25,8 @@
                 <ul class="nav navbar-nav">
                 
                     <!-- <li><a href="<?php echo base_url(); ?>home/index3">Home</a></li> -->
-                    <li><a href="<?php echo base_url(); ?>home/index1">About</a></li>
                     <li><a href="<?php echo base_url(); ?>Publish_controller/list_user_published_forms">Published Forms</a></li>
-                    <li><a href="<?php echo base_url(); ?>Response_submit/submit_form">Responses</a></li>
+                    <!-- <li><a href="<?php echo base_url(); ?>">Responses</a></li> -->
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -55,9 +54,7 @@
             <?php echo '<p class="alert alert-danger">' . $this->session->flashdata('login_failed') . '</p>'; ?>
         <?php endif; ?>
 
-        <?php if ($this->session->flashdata('user_loggedin')): ?>
-            <?php echo '<p class="alert alert-success">' . $this->session->flashdata('user_loggedin') . '</p>'; ?>
-        <?php endif; ?>
+    
 
         <?php if ($this->session->flashdata('user_loggedout')): ?>
             <?php echo '<p class="alert alert-success">' . $this->session->flashdata('user_loggedout') . '</p>'; ?>
