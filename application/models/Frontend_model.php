@@ -27,4 +27,13 @@ class Frontend_model extends CI_Model {
             $query = $this->db->get_where('forms', ['id' => $form_id]);
             return $query->row_array();
         }
+        public function getforms_draft($user_id) {
+            $this->db->where('is_published', 0); // Filter by unpublished forms
+            $this->db->where('user_id', $user_id); // Filter by user_id
+            $this->db->order_by('created_on', 'DESC'); // Sort by creation date, newest first
+            $query = $this->db->get('forms');
+            return $query->result();
+        }
+        
+        
 }

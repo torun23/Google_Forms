@@ -20,6 +20,7 @@ class New_form_controller extends CI_Controller {
 
             if ($saveStatus) {
                 echo json_encode(['status' => 'success', 'message' => 'Form data submitted successfully']);
+
             } else {
                 echo json_encode(['status' => 'error', 'message' => 'Failed to save form data']);
             }

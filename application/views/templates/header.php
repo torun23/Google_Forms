@@ -26,6 +26,8 @@
             <ul class="nav navbar-nav">
                 <?php if ($this->session->userdata('logged_in')): ?>
                     <li><a href="<?php echo base_url(); ?>Publish_controller/list_user_published_forms">Published Forms</a></li>
+                    <li><a href="<?php echo base_url(); ?>Form_controller/index_forms_draft">Drafts</a></li>
+
                 <?php endif; ?>
             </ul>
             <ul class="nav navbar-nav navbar-right">

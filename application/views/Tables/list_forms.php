@@ -22,8 +22,6 @@
                                 <th>Description</th>
                                 <th>Created On</th>
                                 <th>Status</th>
-                                <th>Edit</th>
-                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -37,14 +35,6 @@
                                     <td><?php echo $row->created_on; ?></td>
                                     <td>
                                         <?php echo ($row->is_published ? 'Published' : 'Draft'); ?>
-                                    </td>
-
-                                    <td>
-                                        <a href="<?php echo base_url('Form_controller/edit_form/' . $row->id); ?>" class="btn btn-success btn-sm">Edit</a>
-                                    </td>
-                                    <td>
-                                        <a href="<?php echo base_url('forms/delete/' . $row->id); ?>"
-                                            class="btn btn-danger btn-sm">Delete</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

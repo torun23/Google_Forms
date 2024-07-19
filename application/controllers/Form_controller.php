@@ -52,7 +52,10 @@ redirect('default_page');
         $data['questions'] = $this->Updation_model->get_questions($form_id);
         $data['options'] = $this->Updation_model->get_options();
 
+		// $this->load->view('templates/header');
         $this->load->view('edit_form_view', $data);
+		// $this->load->view('templates/footer');
+
     }
 
     // Save the edited form
@@ -67,4 +70,35 @@ redirect('default_page');
 
         echo json_encode(['status' => 'success']);
     }
+	public function index_forms_draft($form_id = null) {
+		$this->load->model('Frontend_model');
+	
+		// Check if the user is logged in
+		if (!$this->session->userdata('logged_in')) {
+			// If not logged in, redirect to login page
+			redirect('users/login');
+		}
+	
+		// Retrieve form title from the forms table using form_id
+		$form_title = 'Untitled Form'; // Default title
+		if ($form_id) {
+			$form = $this->Frontend_model->getFormById($form_id);
+			if ($form) {
+				$form_title = $form['title'];
+			}
+		}
+	
+		// Get the user_id from session
+		$user_id = $this->session->userdata('user_id');
+	
+		// Load views and data if user is logged in
+		$this->load->view('templates/header');
+	
+		// Get the forms created by the user
+		$data = $this->Frontend_model->getforms_draft($user_id);
+		$this->load->view('Tables/draft', ['forms' => $data, 'form_title' => $form_title]);
+	
+		$this->load->view('templates/footer');
+	}
+	
 }
