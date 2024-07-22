@@ -66,7 +66,7 @@
                 </div>
             <?php endforeach; ?>
         </div>
-        <button type="submit" class="btn btn-success" style="display: block; margin: 20px auto 20px 240px;">Submit</button>
+        <button type="submit" class="btn btn-success" style="display: block; margin: 20px auto 20px 240px; background-color: rgb(103, 58, 183); border-color: rgb(103, 58, 183); color: white;">Submit</button>
     </form>
 </div>
 </body>

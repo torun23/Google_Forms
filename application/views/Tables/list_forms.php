@@ -29,7 +29,7 @@
                                 <tr>
                                     <td><?php echo $row->id; ?></td>
                                     <td><a
-                                            href="<?php echo base_url('forms/preview/' . $row->id); ?>"><?php echo $row->title; ?></a>
+                                            href="<?php echo base_url('publish/' . $row->id); ?>"><?php echo $row->title; ?></a>
                                     </td>
                                     <td><?php echo $row->description; ?></td>
                                     <td><?php echo $row->created_at; ?></td>

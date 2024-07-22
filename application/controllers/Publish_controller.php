@@ -19,7 +19,7 @@ class Publish_controller extends CI_Controller {
         ]);
 
         // Redirect to the list_user_published_forms function
-        redirect('Publish_controller/list_user_published_forms');
+        redirect('published_forms');
     }
 
     // Method to list published forms of a user
@@ -49,6 +49,6 @@ class Publish_controller extends CI_Controller {
         $this->Publish_model->update_form($form_id, ['is_published' => 0]);
 
         // Redirect to the list_user_published_forms function
-        redirect('Publish_controller/list_user_published_forms');
+        redirect('published_forms');
     }
 }

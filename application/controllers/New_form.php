@@ -27,7 +27,7 @@ class New_form extends CI_Controller
 
 
             // $this->session->set_flashdata('user_registered', 'You are now registered and can log in');
-            redirect('home/design_form');
+            redirect('designform');
         }
 
     }

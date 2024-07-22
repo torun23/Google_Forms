@@ -28,6 +28,7 @@
 
         #submit-btn {
             margin-top: 20px;
+            background-color: rgb(103, 58, 183); border-color: rgb(103, 58, 183); color: white;"
             float: left;
             clear: both;
         }
@@ -45,7 +46,7 @@
     <nav class="navbar navbar-inverse navbar-custom">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="<?php echo base_url(); ?>Form_controller/index_forms">Google Forms</a>
+                <a class="navbar-brand" href="<?php echo base_url(); ?>">Google Forms</a>
             </div>
             <div id="navbar">
                 <ul class="nav navbar-nav navbar-right">
@@ -63,7 +64,7 @@
         </div>
         <div id="form-container"></div>
 
-        <button id="submit-btn" class="btn btn-success" style="margin-left: 240px; margin-top: 20px">Submit</button>
+        <button id="submit-btn" class="btn btn-success" style="margin-left: 240px; margin-top: 20px ">Submit</button>
 
     </div>
 

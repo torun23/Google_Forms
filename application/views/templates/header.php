@@ -23,15 +23,15 @@
     <div class="container" style="background-color: rgb(103, 58, 183);">
         <?php if ($this->session->userdata('logged_in')): ?>
             <div class="navbar-header">
-                <a class="navbar-brand" href="<?php echo base_url(); ?>Form_controller/index_forms">Google Forms</a>
+                <a class="navbar-brand" href="<?php echo base_url(); ?>">Google Forms</a>
             </div>
         <?php endif; ?>
 
         <div id="navbar">
             <ul class="nav navbar-nav">
                 <?php if ($this->session->userdata('logged_in')): ?>
-                    <li><a href="<?php echo base_url(); ?>Publish_controller/list_user_published_forms">Published Forms</a></li>
-                    <li><a href="<?php echo base_url(); ?>Form_controller/index_forms_draft">Drafts</a></li>
+                    <li><a href="<?php echo base_url(); ?>published_forms">Published Forms</a></li>
+                    <li><a href="<?php echo base_url(); ?>drafts">Drafts</a></li>
 
                 <?php endif; ?>
             </ul>
@@ -41,7 +41,7 @@
                     <li><a href="<?php echo base_url(); ?>users/register">Register</a></li>
                 <?php endif; ?>
                 <?php if ($this->session->userdata('logged_in')): ?>
-                    <li><a href="<?php echo base_url(); ?>home/title">Create Form</a></li>
+                    <li><a href="<?php echo base_url(); ?>homepage/title">Create Form</a></li>
                     <li><a href="<?php echo base_url(); ?>users/logout">Logout</a></li>
                 <?php endif; ?>
             </ul>

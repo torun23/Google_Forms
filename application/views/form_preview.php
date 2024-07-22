@@ -120,7 +120,7 @@
         </div>
     <?php endforeach; ?>
 
-    <a href="<?php echo base_url('Publish_controller/publish_form/'.$form->id); ?>" class="btn btn-success" style="margin-top: 20px; position: relative; left: 240px;">Publish</a>
-</div>
+    <a href="<?php echo base_url('Publish_controller/publish_form/'.$form->id); ?>" class="btn btn-success" style="margin-top: 20px; position: relative; left: 240px; background-color: rgb(103, 58, 183); border-color: rgb(103, 58, 183); color: white;">Publish</a>
+    </div>
 </body>
 </html>

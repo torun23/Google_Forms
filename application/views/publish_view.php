@@ -29,21 +29,20 @@
                                 <tr>
                                     <td><a href="<?php echo base_url('Response_submit/view/' . $row->id); ?>"><?php echo $row->id; ?></a></td>
                                     <td>
-                                        <a href="<?php echo base_url('forms/preview_back/' . $row->id); ?>"><?php echo $row->title; ?></a>
+                                        <a href="<?php echo base_url('form_preview/' . $row->id); ?>"><?php echo $row->title; ?></a>
                                     </td>
                                     <td><?php echo $row->description; ?></td>
                                     <td>
                                         <a href="<?php echo $row->response_link; ?>" target="_blank"><?php echo $row->response_link; ?></a>
                                     </td>
                                     <td>
-                                        <a href="<?php echo base_url('Publish_controller/unpublish_form/' . $row->id); ?>" class="btn btn-danger btn-sm">Unpublish</a>
+                                        <a href="<?php echo base_url('Publish_controller/unpublish_form/' . $row->id); ?>" class="btn btn-danger btn-sm" style=" background-color: rgb(103, 58, 183); border-color: rgb(103, 58, 183); color: white;">Unpublish</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
-            </div>
         </div>
     </div>
 </div>

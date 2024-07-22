@@ -39,7 +39,7 @@ class Form_controller extends CI_Controller {
 $this->load->model('Frontend_model');
 $this->Frontend_model->deleteForm($id);
 $this->session->set_flashdata('status','Form data deleted successfully');
-redirect('default_page');
+redirect('home');
 	}
     public function __construct() {
         parent::__construct();

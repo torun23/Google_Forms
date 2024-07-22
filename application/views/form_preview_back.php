@@ -58,7 +58,7 @@
         </div>
     <?php endforeach; ?>
 
-    <a href="<?php echo base_url('Publish_controller/list_user_published_forms'); ?>" class="btn btn-success" style="margin-top: 20px; position: relative; left: 240px;">Back</a>
+    <a href="<?php echo base_url('published_forms'); ?>" class="btn btn-success" style="margin-top: 20px; position: relative; left: 240px; background-color: rgb(103, 58, 183); border-color: rgb(103, 58, 183); color: white; position: relative; left: 240px;">Back</a>
 </div>
 </body>
 </html>

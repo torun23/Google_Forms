@@ -223,3 +223,9 @@ table a:not(.btn) {
 table a:not(.btn):hover {
     color: darkblue !important;
 }
+/* .btn-success {
+    color: #ffffff;
+    background-color: rgb(103, 58, 183);
+    border-color: rgb(103, 58, 183);
+} */
+

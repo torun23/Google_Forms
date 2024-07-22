@@ -1,11 +1,11 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Home extends CI_Controller
+class Homepage extends CI_Controller
 {
 
 	// index2-default
-	public function default_page()
+	public function home()
 	{
 		$this->load->view('Frontend/header');
 
