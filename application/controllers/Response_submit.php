@@ -19,24 +19,33 @@ class Response_submit extends CI_Controller {
 
     public function view_responses($form_id) {
         $this->load->model('Response_model');
-
+    
         $data['form'] = $this->Response_model->get_form($form_id);
         $data['responses'] = $this->Response_model->get_responses_by_form($form_id);
-
+    
         $this->load->view('templates/header');
         $this->load->view('responses_list', $data);
         $this->load->view('templates/footer');
-
     }
+    
 
     public function submit_form() {
         $this->load->model('Response_model');
         $responses = $this->input->post('responses');
         $user_id = $this->session->userdata('user_id'); // Assuming user_id is stored in session
-
+        $form_id = $this->input->post('form_id'); // Assuming form_id is passed
+    
+        // Insert into responses table
+        $response_id = $this->Response_model->insert_response([
+            'form_id' => $form_id,
+            'user_id' => $user_id,
+            'submitted_at' => date('Y-m-d H:i:s')
+        ]);
+    
+        // Insert each answer into response_answers table
         foreach ($responses as $response) {
             $answered_text = '';
-
+    
             if (isset($response['options'])) {
                 if (is_array($response['options'])) {
                     $answered_text = implode(', ', $response['options']);
@@ -46,28 +55,18 @@ class Response_submit extends CI_Controller {
             } else if (isset($response['answered_text'])) {
                 $answered_text = $response['answered_text'];
             }
-
-            // Find the max response_id for the given form_id
-            $this->db->select_max('response_id');
-            $this->db->where('form_id', $response['form_id']);
-            $max_response_id = $this->db->get('responses')->row()->response_id;
-
-            // Increment the response_id by 1
-            $new_response_id = $max_response_id + 1;
-
+    
             $data = [
-                'form_id' => $response['form_id'],
-                'user_id' => $user_id,
+                'response_id' => $response_id,
                 'question_id' => $response['question_id'],
                 'answered_text' => $answered_text,
-                'response_id' => $new_response_id,
                 'submitted_at' => date('Y-m-d H:i:s')
             ];
-
-            $this->Response_model->insert_response($data);
+    
+            $this->Response_model->insert_response_answer($data);
         }
-
-        redirect('Response_submit/view_responses/' . $response['form_id']);
+    
+        redirect('Response_submit/view_responses/' . $form_id);
     }
     
     
@@ -87,10 +86,12 @@ class Response_submit extends CI_Controller {
             $this->load->model('Response_model');
             $data['response'] = $this->Response_model->get_response($response_id);
             $data['form'] = $this->Response_model->get_form_by_response($response_id); // Get form details
-            $data['questions'] = $this->Response_model->get_questions_and_answers($response_id);
+            $data['questions_and_answers'] = $this->Response_model->get_questions_and_answers($response_id);
             
             $this->load->view('templates/header');
             $this->load->view('response_details_view', $data);
             $this->load->view('templates/footer');
         }
+        
+        
 }

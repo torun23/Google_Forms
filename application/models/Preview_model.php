@@ -1,19 +1,22 @@
 <?php
 class preview_model extends CI_Model {
+    
+    public function get_form($form_id) {
+        $this->db->where('id', $form_id);
+        $query = $this->db->get('forms');
+        return $query->row();
+    }
 
-    public function get_form($form_id)
-    {
-        return $this->db->get_where('forms', array('id' => $form_id))->row();
+    public function get_questions($form_id) {
+        $this->db->where('form_id', $form_id);
+        $query = $this->db->get('questions');
+        return $query->result(); // Ensure this returns objects with the 'is_required' field
     }
-    
-    public function get_questions($form_id)
-    {
-        return $this->db->get_where('questions', array('form_id' => $form_id))->result();
-    }
-    
-    public function get_options($question_id)
-    {
-        return $this->db->get_where('options', array('question_id' => $question_id))->result();
+
+    public function get_options($question_id) {
+        $this->db->where('question_id', $question_id);
+        $query = $this->db->get('options');
+        return $query->result(); // Ensure this returns the options related to the question
     }
     
 }

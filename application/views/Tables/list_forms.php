@@ -32,7 +32,7 @@
                                             href="<?php echo base_url('forms/preview/' . $row->id); ?>"><?php echo $row->title; ?></a>
                                     </td>
                                     <td><?php echo $row->description; ?></td>
-                                    <td><?php echo $row->created_on; ?></td>
+                                    <td><?php echo $row->created_at; ?></td>
                                     <td>
                                         <?php echo ($row->is_published ? 'Published' : 'Draft'); ?>
                                     </td>

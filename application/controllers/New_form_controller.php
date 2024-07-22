@@ -6,8 +6,10 @@ class New_form_controller extends CI_Controller {
     public function submit_form() {
         if (!$this->session->userdata('logged_in')) {
             // If not logged in, redirect to login page
-            redirect('users/login');
+            echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
+            return;
         }
+
         // Decode the formData from the POST request
         $formData = $this->input->post('formData');
 
@@ -20,7 +22,6 @@ class New_form_controller extends CI_Controller {
 
             if ($saveStatus) {
                 echo json_encode(['status' => 'success', 'message' => 'Form data submitted successfully']);
-
             } else {
                 echo json_encode(['status' => 'error', 'message' => 'Failed to save form data']);
             }

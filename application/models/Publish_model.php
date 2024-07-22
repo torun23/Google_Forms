@@ -10,8 +10,10 @@ public function update_form($form_id, $data) {
 // Method to retrieve published forms by user
 public function get_published_forms_by_user($user_id) {
     $this->db->where('user_id', $user_id);
-    $this->db->where('is_published', 1); 
+    $this->db->where('is_published', 1);
+    $this->db->order_by('id', 'DESC'); // Order by id column, most recent first
     $query = $this->db->get('forms');
     return $query->result();
 }
+
 }

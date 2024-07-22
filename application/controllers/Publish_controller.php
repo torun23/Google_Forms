@@ -31,11 +31,12 @@ class Publish_controller extends CI_Controller {
         $user_id = $this->session->userdata('user_id');
         $this->load->model('Publish_model');
         $data['forms'] = $this->Publish_model->get_published_forms_by_user($user_id);
-
+    
         $this->load->view('templates/header');
         $this->load->view('publish_view', $data);
         $this->load->view('templates/footer');
     }
+    
 
     // Method to unpublish a form
     public function unpublish_form($form_id) {

@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Preview - Google Forms</title>
+    <link rel="stylesheet" href="https://bootswatch.com/3/flatly/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/form_preview_back.css">
+</head>
+<body>
 <div class="container">
     <div class="form-header">
         <h2><?php echo $form->title; ?></h2>
@@ -19,7 +29,7 @@
                         </div>
                     <?php endforeach; ?>
                 </div>
-            <?php elseif ($question->type == 'checkbox'): ?>
+            <?php elseif ($question->type == 'checkboxes'): ?>
                 <div class="options-container">
                     <?php foreach ($question->options as $option): ?>
                         <div class="option">
@@ -50,4 +60,5 @@
 
     <a href="<?php echo base_url('Publish_controller/list_user_published_forms'); ?>" class="btn btn-success" style="margin-top: 20px; position: relative; left: 240px;">Back</a>
 </div>
-                            
+</body>
+</html>

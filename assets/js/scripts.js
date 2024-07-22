@@ -217,26 +217,32 @@ function addOption(type, container) {
 
     function collectFormData() {
         var formData = {
-        questions:[]
+            questions: []
         };
-
+    
         $('.form-section').each(function() {
+            var questionType = $(this).find('.custom-select').val();
             var questionData = {
                 text: $(this).find('.untitled-question').val(),
-                type: $(this).find('.custom-select').val(),
+                type: questionType,
                 required: $(this).find('.required-toggle').is(':checked'),
                 options: []
             };
-
-            $(this).find('.option-label').each(function() {
-                questionData.options.push($(this).val());
-            });
-
+    
+            // Only add options if the question type supports them
+            if (questionType === 'multiple-choice' || questionType === 'checkboxes' || questionType === 'dropdown') {
+                $(this).find('.option-label').each(function() {
+                    questionData.options.push($(this).val());
+                });
+            }
+    
             formData.questions.push(questionData);
         });
-        console.log(formData);
+    
+        // console.log(formData);
         return formData;
     }
+    
 
     function validateFormData(formData) {
         for (let question of formData.questions) {
@@ -254,17 +260,16 @@ function addOption(type, container) {
         }
         return { isValid: true };
     }
-
     $('#submit-btn').on('click', function() {
         let formData = collectFormData();
         console.log(formData);
-
+    
         let validation = validateFormData(formData);
         if (!validation.isValid) {
             alert(validation.message);
             return;
         }
-
+    
         $.ajax({
             url: base_url + 'New_form_controller/submit_form',
             type: 'POST',
@@ -273,7 +278,8 @@ function addOption(type, container) {
             success: function(response) {
                 if (response.status === 'success') {
                     alert('Form submitted successfully!');
-                    console.log(response);
+                    // Redirect to Form_controller/index_forms
+                    window.location.href = base_url + 'Form_controller/index_forms';
                 } else {
                     alert(response.message);
                     console.log(response);
@@ -281,10 +287,11 @@ function addOption(type, container) {
             },
             error: function(error) {
                 alert('Error submitting form!');
+                window.location.href = base_url + 'Form_controller/index_forms';
                 console.log(error);
             }
         });
     });
-
+    
     $('#form-container').disableSelection();
 });

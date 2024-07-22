@@ -216,3 +216,10 @@ input:checked + .slider:before {
 .body_header_bg{
   background-color: rgb(240,235,248);
 }
+table a:not(.btn) {
+    color: blue !important;
+}
+
+table a:not(.btn):hover {
+    color: darkblue !important;
+}

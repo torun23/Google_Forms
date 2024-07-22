@@ -9,7 +9,7 @@
                         </div>
                     <?php endif; ?>
                     <h3>
-                        List of Forms
+Drafts
                     </h3>
                 </div>
                 <div class="card-body">
@@ -33,7 +33,7 @@
                                             href="<?php echo base_url('forms/preview/' . $row->id); ?>"><?php echo $row->title; ?></a>
                                     </td>
                                     <td><?php echo $row->description; ?></td>
-                                    <td><?php echo $row->created_on; ?></td>
+                                    <td><?php echo $row->created_at; ?></td>
                                     <td>
                                         <a href="<?php echo base_url('Form_controller/edit_form/' . $row->id); ?>"
                                             class="btn btn-success btn-sm">Edit</a>

@@ -21,7 +21,7 @@ class Form_model extends CI_Model {
             foreach ($section['options'] as $option_text) {
                 $option_data = array(
                     'question_id' => $question_id,
-                    'text' => $option_text,
+                    'option_text' => $option_text,
                     'created_at' => date('Y-m-d H:i:s')
                 );
 

@@ -1,7 +1,7 @@
-<div></div>
 <script>
 $(document).ready(function(){
-  $('#basetable1').DataTable();
+    $('#basetable1').DataTable({
+        // "pagingType": "full_numbers"
+    });
 });
-  </script>
-    </body>
+</script>
