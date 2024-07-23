@@ -57,16 +57,18 @@
     </nav>
 
     <div class="container">
-        <div class="form-header">
-            <button id="preview-btn" class="btn btn-info"><i class="fas fa-eye"></i></button>
-            <h2>Untitled Form</h2>
-            <button id="add-section-btn" class="btn btn-primary">+</button>
-        </div>
-        <div id="form-container"></div>
+    <div class="form-header">
+        <button id="preview-btn" class="btn btn-info"><i class="fas fa-eye"></i></button>
+        <h2><?php echo htmlspecialchars($title); ?></h2>
+        <!-- <h2>Untitled Form</h2> -->
 
-        <button id="submit-btn" class="btn btn-success" style="margin-left: 240px; margin-top: 20px ">Submit</button>
-
+        <button id="add-section-btn" class="btn btn-primary">+</button>
     </div>
+    <div id="form-container"></div>
+
+    <button id="submit-btn" class="btn btn-success" style="margin-left: 240px; margin-top: 20px">Submit</button>
+</div>
+
 
     <script src="<?php echo base_url('assets/js/jquery.min.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/bootstrap.min.js'); ?>"></script>

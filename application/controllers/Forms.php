@@ -38,7 +38,7 @@ class Forms extends CI_Controller
         {
             if (!$this->session->userdata('logged_in')) {
                 // If not logged in, redirect to login page
-                redirect('users/login');
+                redirect('users/login/'.$form_id);
             }
         
             // Load the model that handles the form data

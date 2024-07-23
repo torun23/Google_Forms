@@ -4,12 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Form</title>
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/3/flatly/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/header_new.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-custom">
+        <div class="container">
+            <?php if ($this->session->userdata('logged_in')): ?>
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="<?php echo base_url(); ?>">Google Forms</a>
+                </div>
+            <?php endif; ?>
+
+            <div id="navbar">
+                <ul class="nav navbar-nav left">
+                    <?php if ($this->session->userdata('logged_in')): ?>
+                        <li><a href="<?php echo base_url(); ?>published_forms">Published Forms</a></li>
+                        <li><a href="<?php echo base_url(); ?>drafts">Drafts</a></li>
+                    <?php endif; ?>
+                </ul>
+                <ul class="nav navbar-nav right">
+                    <?php if (!$this->session->userdata('logged_in')): ?>
+                        <li><a href="<?php echo base_url(); ?>users/login">Login</a></li>
+                        <li><a href="<?php echo base_url(); ?>users/register">Register</a></li>
+                    <?php endif; ?>
+                    <?php if ($this->session->userdata('logged_in')): ?>
+                        <li><a href="<?php echo base_url(); ?>homepage/title">Create Form</a></li>
+                        <li><a href="<?php echo base_url(); ?>users/logout">Logout</a></li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Alert Messages -->
+    <div class="container">
+        <?php if ($this->session->flashdata('user_registered')): ?>
+            <p class="alert alert-success"><?php echo $this->session->flashdata('user_registered'); ?></p>
+        <?php endif; ?>
+
+        <?php if ($this->session->flashdata('login_failed')): ?>
+            <p class="alert alert-danger"><?php echo $this->session->flashdata('login_failed'); ?></p>
+        <?php endif; ?>
+
+        <?php if ($this->session->flashdata('user_loggedin')): ?>
+            <p class="alert alert-success"><?php echo $this->session->flashdata('user_loggedin'); ?></p>
+        <?php endif; ?>
+
+        <?php if ($this->session->flashdata('user_loggedout')): ?>
+            <p class="alert alert-success"><?php echo $this->session->flashdata('user_loggedout'); ?></p>
+        <?php endif; ?>
+    </div>
+
+    <!-- Form Editor -->
     <div class="container">
         <div class="form-header">
             <button id="preview-btn" class="btn btn-info"><i class="fas fa-eye"></i></button>
@@ -55,8 +108,9 @@
                 </div>
             <?php endforeach; ?>
         </div>
-        <button id="submit-btn" class="btn btn-success" style="background-color: rgb(103, 58, 183); border-color: rgb(103, 58, 183); color: white; margin-left: 240px; margin-top: 20px">Submit</button>
+        <button id="submit-btn" class="btn btn-success btn-custom">Submit</button>
     </div>
+
     <script src="<?php echo base_url('assets/js/jquery.min.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/bootstrap.min.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/jquery-ui.js'); ?>"></script>
@@ -65,9 +119,33 @@
     <script>
 $(document).ready(function() {
     var base_url = '<?php echo base_url(); ?>';
+    var index = 1;
+    var activeSection = null;
+
+    function positionAddSectionButton() {
+        if (activeSection) {
+            var position = activeSection.position();
+            var buttonWidth = $('#add-section-btn').outerWidth();
+            var buttonHeight = $('#add-section-btn').outerHeight();
+
+            $('#add-section-btn').css({
+                position: 'absolute',
+                left: position.left - buttonWidth - 47 + 'px',
+                top: position.top + activeSection.height() / 2 - buttonHeight / 2 + 'px'
+            });
+        }
+    }
 
     // Add section button functionality
     $('#add-section-btn').on('click', function() {
+        createFormSection();
+        $('.form-section').removeClass('active');
+        activeSection = $('.form-section').last();
+        activeSection.addClass('active');
+        positionAddSectionButton();
+    });
+
+    function createFormSection() {
         var sectionHtml = `
             <div class="form-section" data-type="">
                 <div class="header-row">
@@ -86,44 +164,40 @@ $(document).ready(function() {
                     <span class="delete-section-icon"><i class="fas fa-trash-alt"></i></span>
                 </div>
                 <div class="options-container"></div>
-                <button class="btn btn-secondary add-option-btn" style="display: none;">Add Option</button>
+                <button class="btn btn-secondary add-option-btn">Add Option</button>
             </div>
         `;
         $('#form-container').append(sectionHtml);
-    });
+    }
 
-    // Add option button functionality
+    // Handle option button click
     $(document).on('click', '.add-option-btn', function() {
+        var $section = $(this).closest('.form-section');
         var optionHtml = `
             <div class="option">
-                <input type="text" class="form-control option-label" placeholder="Option">
+                <input type="text" class="form-control option-label" value="">
                 <span class="delete-option-icon">&times;</span>
             </div>
         `;
-        $(this).siblings('.options-container').append(optionHtml);
+        $section.find('.options-container').append(optionHtml);
     });
 
-    // Delete option functionality
-    $(document).on('click', '.delete-option-icon', function() {
-        $(this).parent().remove();
-    });
-
-    // Delete section functionality
+    // Handle delete section button click
     $(document).on('click', '.delete-section-icon', function() {
         $(this).closest('.form-section').remove();
     });
 
-    // Show/Hide "Add Option" button based on question type
-    $(document).on('change', '.custom-select', function() {
-        var type = $(this).val();
-        var $section = $(this).closest('.form-section');
-        if (type === 'multiple-choice' || type === 'checkboxes' || type === 'dropdown') {
-            $section.find('.add-option-btn').show();
-        } else {
-            $section.find('.add-option-btn').hide();
-        }
-    }).trigger('change'); // Trigger change to apply to existing sections
-    // Submit button functionality
+    // Handle delete option button click
+    $(document).on('click', '.delete-option-icon', function() {
+        $(this).closest('.option').remove();
+    });
+
+    // Handle preview button click
+    $('#preview-btn').on('click', function() {
+        alert('Preview functionality is not implemented.');
+    });
+
+    // Handle submit button click
     $('#submit-btn').on('click', function() {
         var formData = collectFormData();
         formData['form_id'] = <?php echo $form['id']; ?>;
@@ -195,9 +269,23 @@ $(document).ready(function() {
             }
         }
         return { isValid: true };
-    }
+    }   
+
+    // Initialize
+    $('.form-section').each(function() {
+        $(this).on('click', function() {
+            $('.form-section').removeClass('active');
+            $(this).addClass('active');
+            activeSection = $(this);
+            positionAddSectionButton();
+        });
+    });
+
+    // Handle window resize to reposition button
+    $(window).on('resize', function() {
+        positionAddSectionButton();
+    });
 });
     </script>
 </body>
 </html>
-</div>

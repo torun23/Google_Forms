@@ -21,4 +21,9 @@ $route['edit/(:num)'] = 'Form_controller/edit_form/$1';
 
 $route['form_preview/(:num)'] = 'forms/preview_back/$1';
 $route['responses/(:num)'] = 'Response_submit/view_responses/$1';
-$route['designform'] = 'homepage/design_form';
+$route['designform/(:num)'] = 'homepage/design_form/$1';
+$route['response_preview/(:num)'] = 'forms/response_preview/$1';
+
+$route['title'] = 'homepage/title';
+
+// $route['designform'] = 'homepage/design_form';

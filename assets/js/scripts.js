@@ -225,7 +225,7 @@ function addOption(type, container) {
             var questionData = {
                 text: $(this).find('.untitled-question').val(),
                 type: questionType,
-                required: $(this).find('.required-toggle').is(':checked'),
+                is_required: $(this).find('.required-toggle').is(':checked'),
                 options: []
             };
     
@@ -239,7 +239,7 @@ function addOption(type, container) {
             formData.questions.push(questionData);
         });
     
-        // console.log(formData);
+        console.log(formData);
         return formData;
     }
     
@@ -282,7 +282,7 @@ function addOption(type, container) {
                     window.location.href = base_url + 'Form_controller/index_forms';
                 } else {
                     alert(response.message);
-                    console.log(response);
+                    // console.log(response);
                 }
             },
             error: function(error) {
